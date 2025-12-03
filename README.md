@@ -41,24 +41,25 @@ cd aws-ecs-terraform-capstone/terraform
 Step 2: Configure variables
 Edit terraform.tfvars or variables.tf:
 
-hcl
-Copy code
+```bash
 aws_region = "ap-south-1"
 environment = "dev"
 availability_zones = ["ap-south-1a", "ap-south-1b"]
 instance_ssh_allowed_cidr = "YOUR.IP.ADD.RESS/32"
-container_image = "nginxdemos/hello"
+
 Step 3: Initialize Terraform
-bash
-Copy code
+
+```bash
 terraform init
+
 Step 4: Plan the deployment
-bash
-Copy code
+
+```bash
 terraform plan
+
 Step 5: Apply the deployment
-bash
-Copy code
+
+```bash
 terraform apply
 Type yes when prompted.
 
@@ -68,13 +69,10 @@ Go to AWS ECS → Clusters → Your Cluster → Tasks — ensure tasks are runni
 Check ALB → Target Groups — tasks should be healthy
 
 Open the ALB URL in your browser:
-
-cpp
-Copy code
+```bash
 http://<alb-dns-name>
 Step 7: Clean up (optional)
 To destroy resources:
 
-bash
-Copy code
+```bash
 terraform destroy
