@@ -1,66 +1,83 @@
-# AWS ECS Terraform Capstone Project
+# AWS ECS + Terraform Capstone Project
 
-This repository contains a **containerized web application** deployed on **AWS ECS Fargate** using **Terraform**. The project demonstrates full infrastructure provisioning with IaC and container orchestration.
+## Project Overview
+This capstone project demonstrates deploying a **containerized web application** on **AWS ECS Fargate** using **Terraform** for infrastructure provisioning. The project includes:
+
+- VPC setup with public and private subnets
+- Security groups for ECS tasks and ALB
+- ECS cluster and Fargate tasks
+- Application Load Balancer (ALB) with health checks
+- Dockerized web application deployment
 
 ---
 
-## Project Overview
+## Repository Structure
+aws-ecs-terraform-capstone/
+│
+├── app/ # Web application code and Dockerfile
+├── terraform/ # Terraform scripts for AWS infrastructure
+│ ├── main.tf
+│ ├── variables.tf
+│ ├── outputs.tf
+│ └── ...
+└── README.md
 
-- **Application:** Simple HTML page served via Nginx (customizable)
-- **Infrastructure:**
-  - **VPC** with public and private subnets
-  - **Internet Gateway** & NAT Gateway
-  - **Route Tables** & Security Groups
-- **AWS Services Used:**
-  - ECS Fargate
-  - Application Load Balancer (ALB)
-  - CloudWatch Logs
-  - ECR (Elastic Container Registry)
-- **Deployment:** Terraform automates cluster, service, and task definitions
+yaml
+Copy code
 
 ---
 
 ## Prerequisites
-
-- AWS CLI configured with appropriate IAM permissions
-- Terraform installed (`v1.5+`)
-- Docker installed for building container images
-- GitHub account (for pushing code)
+- AWS account with permissions for ECS, VPC, ALB, IAM
+- Terraform >= 1.0
+- AWS CLI configured
+- Docker (for building local images if needed)
 
 ---
 
-## Usage
+## Deployment Instructions
 
-### 1. Build and push Docker image to ECR
-
+### Step 1: Clone the repository
 ```bash
-docker build -t myapp .
-docker tag myapp:latest <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/my-app:latest
-docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/my-app:latest
+git clone https://github.com/RajeshwariN/aws-ecs-terraform-capstone.git
+cd aws-ecs-terraform-capstone/terraform
+Step 2: Configure variables
+Edit terraform.tfvars or variables.tf:
 
-### 2. Initialize Terraform
-
-```bash
+hcl
+Copy code
+aws_region = "ap-south-1"
+environment = "dev"
+availability_zones = ["ap-south-1a", "ap-south-1b"]
+instance_ssh_allowed_cidr = "YOUR.IP.ADD.RESS/32"
+container_image = "nginxdemos/hello"
+Step 3: Initialize Terraform
+bash
+Copy code
 terraform init
-
-### 3. Apply Terraform configuration
-
-```bash
+Step 4: Plan the deployment
+bash
+Copy code
+terraform plan
+Step 5: Apply the deployment
+bash
+Copy code
 terraform apply
+Type yes when prompted.
 
-### 4. Access the application
+Step 6: Verify deployment
+Go to AWS ECS → Clusters → Your Cluster → Tasks — ensure tasks are running
 
-```bash
-http://dev-alb-3751824.ap-south-1.elb.amazonaws.com/
+Check ALB → Target Groups — tasks should be healthy
 
+Open the ALB URL in your browser:
 
-### Repository Structure
-aws-ecs-terraform-capstone/
-│
-├─ app/
-│  ├─ Dockerfile
-│  ├─ index.html
-│  └─ app.py
-├─ terraform/
-│  └─ *.tf files
-├─ README.md
+cpp
+Copy code
+http://<alb-dns-name>
+Step 7: Clean up (optional)
+To destroy resources:
+
+bash
+Copy code
+terraform destroy
