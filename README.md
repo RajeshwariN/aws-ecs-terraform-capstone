@@ -14,16 +14,13 @@ This capstone project demonstrates deploying a **containerized web application**
 ## Repository Structure
 aws-ecs-terraform-capstone/
 │
-├── app/ # Web application code and Dockerfile
-├── terraform/ # Terraform scripts for AWS infrastructure
-│ ├── main.tf
-│ ├── variables.tf
-│ ├── outputs.tf
-│ └── ...
-└── README.md
-
-yaml
-Copy code
+├─ app/
+│  ├─ Dockerfile
+│  ├─ index.html
+│  └─ app.py
+├─ terraform/
+│  └─ *.tf files
+├─ README.md
 
 ---
 
